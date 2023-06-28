@@ -24,3 +24,9 @@ let Geburtsdatum = System.Console.ReadLine();
 
 printfn "Einkommen:"
 let Einkommen = System.Console.ReadLine();
+
+let Name = printfn $"
+{Vorname} {Nachname}"
+let Addresse = printfn $"{Straße} {Hausnummer}, {PLZ} {Stadt}"
+let Geburtstag = printfn $"{Geburtsdatum}"
+let Lohn = printfn $"Einkommen:{Einkommen} Euro"
