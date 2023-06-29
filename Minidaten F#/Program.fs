@@ -85,7 +85,6 @@ Stimmt alles?"
 {Geburtsdatum}
 {Einkommen}"]
         updatedsave <- updatedsave2 @ []
-        updatedsave2 = []
         saves <- List.append saves updatedsave
         Break2 <- false
     else 
@@ -141,7 +140,37 @@ Fertig?(Ja)"
             List.iter (printfn "%s") updatedsaves
             saves <- updatedsaves @ []
 
-            
+
+        if AccountDeleteAnswer = "2" then
+            let updatedsaves =  (List.take 1 saves) @ (List.skip 2 saves)
+            saves <- updatedsaves @ []
+            List.iter (printfn "%s") saves
+            AccountNum <- AccountNum - 1
+
+        if AccountDeleteAnswer = "3" then
+            let updatedsaves =  (List.take 2 saves) @ (List.skip 3 saves)
+            saves <- updatedsaves @ []
+            List.iter (printfn "%s") saves
+            AccountNum <- AccountNum - 1
+
+        if AccountDeleteAnswer = "4" then
+            let updatedsaves =  (List.take 3 saves) @ (List.skip 4 saves)
+            saves <- updatedsaves @ []
+            List.iter (printfn "%s") saves
+            AccountNum <- AccountNum - 1
+
+        if AccountDeleteAnswer = "5" then
+            let updatedsaves =  (List.take 4 saves) @ (List.skip 5 saves)
+            saves <- updatedsaves @ []
+            List.iter (printfn "%s") saves
+            AccountNum <- AccountNum - 1
+
+        if AccountDeleteAnswer = "6" then
+            let updatedsaves =  (List.take 5 saves) @ (List.skip 6 saves)
+            saves <- updatedsaves @ []
+            List.iter (printfn "%s") saves
+            AccountNum <- AccountNum - 1
+
 
     if Break2answer = "A" then
         System.Console.Clear();
