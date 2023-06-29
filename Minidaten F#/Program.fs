@@ -10,9 +10,8 @@ let mutable PLZ = ""
 let mutable Stadt = ""
 let mutable Geburtsdatum = ""
 let mutable Einkommen = ""
-
+let mutable AccountNum = 0
 let mutable saves = []
-//List.iter (fun item -> printfn"%s" item) saves
 let mutable updatedsave = []
 
 while not wholeshibreak do
@@ -79,16 +78,18 @@ Stimmt alles?"
         Break <- true
         printfn "Daten gespeichert!
         " 
-        let updatedsave2 = [$"{Vorname} {Nachname}, {Telefonnummer}
+        AccountNum <- AccountNum + 1
+        let updatedsave2 = [$"---------[{AccountNum}]---------
+{Vorname} {Nachname}, {Telefonnummer}
 {Straße} {Hausnummer}, {PLZ} {Stadt}
 {Geburtsdatum}
 {Einkommen}"]
         updatedsave <- updatedsave2 @ []
-        List.iter (fun item -> printfn"%s" item) updatedsave
         updatedsave2 = []
+        saves <- List.append saves updatedsave
         Break2 <- false
     else 
-        System.Console.Clear();
+        System.Console.Clear();  
         printfn "Dann ein nochmal!
         "
         Vorname <- ""
@@ -107,23 +108,7 @@ Stimmt alles?"
 
 
     printfn "
-Was möchten Sie filtern? (Adresse, Kontaktinformationen, Einkommen)"
-    let Auswahl = System.Console.ReadLine(); 
-
-    if Auswahl = "Adresse" then printfn $"
-{Straße} {Hausnummer}, {PLZ} {Stadt}"
-    if Auswahl = "Kontaktinformationen" then printfn $"
-{Vorname} {Nachname},
-{Telefonnummer} 
-{Geburtsdatum}"
-    if Auswahl = "Einkommen" then printfn $"
-Ihr Einkommen ist: {Einkommen}"
-
-
-
-
-    printfn "
-Nochmal? (Ja/Nein) oder Datenbank anschauen? (B) Neuer Account? (A)"
+Nochmal? (Ja oder Enter / Nein) | Datenbank anschauen? (B) | Account entfernen? (D) |Neuer Account? (A)"
     let Break2answer = System.Console.ReadLine();
     if Break2answer = "Ja" then 
         System.Console.Clear(); 
@@ -137,18 +122,29 @@ Nochmal? (Ja/Nein) oder Datenbank anschauen? (B) Neuer Account? (A)"
 
     if Break2answer = "B" then
         System.Console.Clear();
-        List.iter (fun item -> printfn"%s" item) updatedsave
+        List.iter (fun item -> printfn"%s" item) saves
         printfn "
-Fertig?(Ja/Nein)"
+Fertig?(Ja)"
         let anstocontinue = System.Console.ReadLine();
         if anstocontinue = "Ja" then
+                System.Console.Clear();
                 printfn"Les go"
-        if anstocontinue = "Nein" then
-                printfn""
+    
+    if Break2answer = "D" then
+
+        System.Console.Clear();
+        List.iter (fun item -> printfn"%s" item) saves
+        printfn"Welchen Account wollen Sie löschen? (1,2,3...)"
+        let AccountDeleteAnswer = System.Console.ReadLine();
+        if AccountDeleteAnswer = "1" then
+            let updatedsaves = List.tail saves
+            List.iter (printfn "%s") updatedsaves
+            saves <- updatedsaves @ []
+
+            
 
     if Break2answer = "A" then
         System.Console.Clear();
-        saves <- List.append saves updatedsave
         updatedsave <- []
         Vorname <- ""
         Nachname <- ""
@@ -159,7 +155,6 @@ Fertig?(Ja/Nein)"
         Stadt <- ""
         Geburtsdatum <- ""
         Einkommen <- ""
-        List.iter (printfn "%s") saves
         Break2 <- true
         Break <- false
     done
