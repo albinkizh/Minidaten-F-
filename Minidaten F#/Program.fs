@@ -13,66 +13,86 @@ let mutable Einkommen = ""
 let mutable AccountNum = 0
 let mutable saves = []
 let mutable updatedsave = []
+let mutable Text = ""
+let mutable Reader = ""
+
+
+
 
 while not wholeshibreak do
     while not Break do
 
-    printfn "Vorname:"
-    let Vornameant = System.Console.ReadLine();
-    Vorname <- Vorname + Vornameant
+    let GridforUI (Text: string)  (Read: string)  =
+        let gridform = $"------------------------------
+|
+|
+| {Text}: {Read}
+|
+|
+"
+        gridform
 
-    printfn "
-Nachname:"
+    let Gridafterinput Text Input  =
+            let gridform = $"------------------------------
+|
+|
+| {Text}: {Input}
+|
+|
+"
+            gridform
+
+    let Reader1 = System.Console.ReadLine();
+    let Name = "Vorname"
+    let result = GridforUI Name  Reader1
+    printfn "%s" result
+    Reader <- Reader + Reader1
+
+    printf $"" // Nachnamen
     let Nachnameant = System.Console.ReadLine();
     Nachname <- Nachname + Nachnameant
 
-    printfn "
-Straße:"
+    printf $"" // Straße
     let Straßeant = System.Console.ReadLine();
     Straße <- Straße + Straßeant
 
-    printfn "
-Hausnummer:"
+    printf $"" // Hausnummer
     let Hausnummerant = System.Console.ReadLine();
     Hausnummer <- Hausnummer + Hausnummerant
 
-    printfn "
-Telefonnummer:"
+    printf $"" // Telefonnummer
     let Telefonnummerant = System.Console.ReadLine();
     Telefonnummer <- Telefonnummer + Telefonnummerant
 
-    printfn "
-PLZ:"
+    printf $"" // PLZ
     let PLZant = System.Console.ReadLine();
     PLZ <- PLZ + PLZant
 
-    printfn "
-Stadt:"
+    printf $"" // Stadt
     let Stadtant = System.Console.ReadLine();
     Stadt <- Stadt + Stadtant
 
-    printfn "
-Geburtsdatum:"
+    printf $"" // Geburtsdatum
     let Geburtsdatumant = System.Console.ReadLine();
     Geburtsdatum <- Geburtsdatum + Geburtsdatumant
 
-    printfn "
-Einkommen:"
+    printf $"" // Einkommen
     let Einkommenant = System.Console.ReadLine();
     Einkommen <- Einkommen + Einkommenant
-    System.Console.Clear();
 
-    printfn $"
-{Vorname} {Nachname}, {Telefonnummer}"
-    printfn $"{Straße} {Hausnummer}, {PLZ} {Stadt}"
-    printfn $"{Geburtsdatum}"
-    printfn $"Einkommen: {Einkommen} Euro"
+
+
+    printfn $"---------[{AccountNum}]---------
+{Vorname} {Nachname}, {Telefonnummer}
+{Straße} {Hausnummer}, {PLZ} {Stadt}
+{Geburtsdatum}
+{Einkommen}"
 
     printfn "
 Stimmt alles?"
     let Frage = System.Console.ReadLine();
 
-    if Frage = "Ja" then
+    if Frage = "Ja" || Frage = "ja" then
 
         System.Console.Clear();
         Break <- true
@@ -107,7 +127,7 @@ Stimmt alles?"
 
 
     printfn "
-Nochmal? (Ja oder Enter / Nein) | Datenbank anschauen? (B) | Account entfernen? (D) |Neuer Account? (A)"
+Nochmal? (Ja / Nein) | Datenbank anschauen? (B) | Account entfernen? (D) |Neuer Account? (A)"
     let Break2answer = System.Console.ReadLine();
     if Break2answer = "Ja" then 
         System.Console.Clear(); 
@@ -135,42 +155,15 @@ Fertig?(Ja)"
         List.iter (fun item -> printfn"%s" item) saves
         printfn"Welchen Account wollen Sie löschen? (1,2,3...)"
         let AccountDeleteAnswer = System.Console.ReadLine();
-        if AccountDeleteAnswer = "1" then
-            let updatedsaves = List.tail saves
-            List.iter (printfn "%s") updatedsaves
-            saves <- updatedsaves @ []
+        let Accounddelconverted = AccountDeleteAnswer |> int32
+        let AccountDeleteAnswer2 = Accounddelconverted - 1
 
-
-        if AccountDeleteAnswer = "2" then
-            let updatedsaves =  (List.take 1 saves) @ (List.skip 2 saves)
+        if AccountDeleteAnswer = AccountDeleteAnswer then
+            let updatedsaves =  (List.take AccountDeleteAnswer2 saves) @ (List.skip Accounddelconverted saves)
             saves <- updatedsaves @ []
+            System.Console.Clear();
             List.iter (printfn "%s") saves
             AccountNum <- AccountNum - 1
-
-        if AccountDeleteAnswer = "3" then
-            let updatedsaves =  (List.take 2 saves) @ (List.skip 3 saves)
-            saves <- updatedsaves @ []
-            List.iter (printfn "%s") saves
-            AccountNum <- AccountNum - 1
-
-        if AccountDeleteAnswer = "4" then
-            let updatedsaves =  (List.take 3 saves) @ (List.skip 4 saves)
-            saves <- updatedsaves @ []
-            List.iter (printfn "%s") saves
-            AccountNum <- AccountNum - 1
-
-        if AccountDeleteAnswer = "5" then
-            let updatedsaves =  (List.take 4 saves) @ (List.skip 5 saves)
-            saves <- updatedsaves @ []
-            List.iter (printfn "%s") saves
-            AccountNum <- AccountNum - 1
-
-        if AccountDeleteAnswer = "6" then
-            let updatedsaves =  (List.take 5 saves) @ (List.skip 6 saves)
-            saves <- updatedsaves @ []
-            List.iter (printfn "%s") saves
-            AccountNum <- AccountNum - 1
-
 
     if Break2answer = "A" then
         System.Console.Clear();
@@ -186,5 +179,36 @@ Fertig?(Ja)"
         Einkommen <- ""
         Break2 <- true
         Break <- false
+
+
+    (*'if Break2answer = "F" then
+        System.Console.Clear();
+        printfn"Was möchten Sie filtern? (Bundesländer [B] | Namen [N] | Alter [A])"
+        let Filteranswer = System.Console.ReadLine();
+
+        if Filteranswer = "B" then 
+            System.Console.Clear();
+            printfn"Welches Bundesland möchten Sie wählen? 
+( [1] Wien, [2] Niederösterreich, [3] Oberösterreich, Salzburg, Steiermark, Burgenland, Kärnten, Tirol, Vorarlberg)"
+            let indexpointer = System.Console.ReadLine();
+            let bundeslandshower = List.item indexpointer saves
+
+            let extractHausnummer (str: string) =
+                let startIndex = str.IndexOf("Hausnummer") + "Hausnummer".Length
+                let endIndex = str.IndexOf(",", startIndex)
+                if startIndex >= 0 && endIndex >= 0 then
+                    str.Substring(startIndex, endIndex - startIndex).Trim()
+                else
+                    ""
+            let hausnummer = saves
+                            |> List.map extractHausnummer
+                            |> List.head
+
+            // Print the extracted "Hausnummer" value
+            printfn "%s" hausnummer*)
+
+
+
+
     done
 done
